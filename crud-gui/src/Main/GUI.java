@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -41,6 +42,7 @@ public class GUI extends JFrame {
     JButton btAdicionar = new JButton("Adicionar");
     JButton btSalvar = new JButton("Salvar");
     JButton btAlterar = new JButton("Alterar");
+    JButton btExcluir = new JButton("Excluir");
 
     Controle controle = new Controle();
     Trabalhador trabalhador = new Trabalhador();
@@ -63,9 +65,11 @@ public class GUI extends JFrame {
         pnNorte.add(btAdicionar);
         pnNorte.add(btSalvar);
         pnNorte.add(btAlterar);
+        pnNorte.add(btExcluir);
         btAdicionar.setVisible(false);
         btSalvar.setVisible(false);
         btAlterar.setVisible(false);
+        btExcluir.setVisible(false);
         tfPK.requestFocus();
 
         pnCentro.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -95,12 +99,16 @@ public class GUI extends JFrame {
                     tfSalario.setEditable(false);
                     cbAposentado.setEnabled(false);
                     btAlterar.setVisible(true);
+                    btExcluir.setVisible(true);
+                    btAdicionar.setVisible(false);
                     tfPK.requestFocus();
                 } else { //não achou na lista
                     tfNome.setText("");
                     tfSalario.setText("");
                     cbAposentado.setSelected(false);
                     btAdicionar.setVisible(true);
+                    btAlterar.setVisible(false);
+                    btExcluir.setVisible(false);
                     tfNome.setEditable(false);
                     tfSalario.setEditable(false);
                     cbAposentado.setEnabled(false);
@@ -154,6 +162,8 @@ public class GUI extends JFrame {
                 tfSalario.setEditable(false);
                 cbAposentado.setEnabled(false);
                 btBuscar.setVisible(true);
+                btAlterar.setVisible(false);
+                btExcluir.setVisible(false);
             }
         });
 
@@ -172,8 +182,35 @@ public class GUI extends JFrame {
             }
         });
 
+        btExcluir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                int response = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir esse registro?", "Confirm",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                btExcluir.setVisible(false);
+                tfPK.setEnabled(true);
+                tfPK.setEditable(true);
+                tfPK.requestFocus();
+                tfPK.setText("");
+                tfNome.setText("");
+                tfSalario.setText("");
+                cbAposentado.setSelected(false);
+                tfNome.setEditable(false);
+                tfSalario.setEditable(false);
+                cbAposentado.setEnabled(false);
+                btBuscar.setVisible(true);
+                btAlterar.setVisible(false);
+
+                if (response == JOptionPane.YES_OPTION) {
+                    controle.excluir(trabalhador);
+                }
+            }
+        });
+
         setTitle("CRUD - Trabalhador");
-        setSize(500, 400);
+        setSize(700, 500);
         setLocationRelativeTo(null);
     }
 }
