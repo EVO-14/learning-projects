@@ -40,9 +40,12 @@ public class GUI extends JFrame {
     JButton btBuscar = new JButton("Buscar");
     JButton btAdicionar = new JButton("Adicionar");
     JButton btSalvar = new JButton("Salvar");
+    JButton btAlterar = new JButton("Alterar");
 
     Controle controle = new Controle();
     Trabalhador trabalhador = new Trabalhador();
+
+    String acao;
 
     public GUI() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -59,8 +62,10 @@ public class GUI extends JFrame {
         pnNorte.add(btBuscar);
         pnNorte.add(btAdicionar);
         pnNorte.add(btSalvar);
+        pnNorte.add(btAlterar);
         btAdicionar.setVisible(false);
         btSalvar.setVisible(false);
+        btAlterar.setVisible(false);
         tfPK.requestFocus();
 
         pnCentro.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -81,16 +86,15 @@ public class GUI extends JFrame {
         btBuscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Trabalhador trabalhador = controle.buscar(tfPK.getText());
+                trabalhador = controle.buscar(tfPK.getText());
                 if (trabalhador != null) { //achou o trabalhador na lista
-                    btAdicionar.setVisible(false);
                     tfNome.setText(trabalhador.getNome());
                     tfSalario.setText(String.valueOf(trabalhador.getSalario()));
                     cbAposentado.setSelected(trabalhador.isAposentado());
-
                     tfNome.setEditable(false);
                     tfSalario.setEditable(false);
                     cbAposentado.setEnabled(false);
+                    btAlterar.setVisible(true);
                     tfPK.requestFocus();
                 } else { //não achou na lista
                     tfNome.setText("");
@@ -115,19 +119,31 @@ public class GUI extends JFrame {
                 btAdicionar.setVisible(false);
                 btSalvar.setVisible(true);
                 btBuscar.setVisible(false);
+                acao = "adicionar";
             }
         });
 
         btSalvar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (acao.equals("adicionar")) {
+                    trabalhador = new Trabalhador();
+                }
+                Trabalhador trabalhadorAntigo = trabalhador;
+
                 trabalhador.setCpf(tfPK.getText());
                 trabalhador.setNome(tfNome.getText());
                 trabalhador.setSalario(Double.valueOf(tfSalario.getText()));
                 trabalhador.setAposentado(cbAposentado.isSelected());
-                controle.adicionar(trabalhador);
+
+                if (acao.equals("adicionar")) {
+                    controle.adicionar(trabalhador);
+                } else {
+                    controle.alterar(trabalhador, trabalhadorAntigo);
+                }
                 btSalvar.setVisible(false);
                 tfPK.setEnabled(true);
+                tfPK.setEditable(true);
                 tfPK.requestFocus();
                 tfPK.setText("");
 
@@ -138,6 +154,21 @@ public class GUI extends JFrame {
                 tfSalario.setEditable(false);
                 cbAposentado.setEnabled(false);
                 btBuscar.setVisible(true);
+            }
+        });
+
+        btAlterar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btBuscar.setVisible(false);
+                btAlterar.setVisible(false);
+                tfPK.setEditable(false);
+                tfNome.setEditable(true);
+                tfSalario.setEditable(true);
+                cbAposentado.setEnabled(true);
+                tfNome.requestFocus();
+                btSalvar.setVisible(true);
+                acao = "alterar";
             }
         });
 
