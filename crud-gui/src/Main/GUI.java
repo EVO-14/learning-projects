@@ -1,12 +1,14 @@
 package Main;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -14,7 +16,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -43,11 +48,27 @@ public class GUI extends JFrame {
     JButton btSalvar = new JButton("Salvar");
     JButton btAlterar = new JButton("Alterar");
     JButton btExcluir = new JButton("Excluir");
+    JButton btListar = new JButton("Listar");
 
     Controle controle = new Controle();
     Trabalhador trabalhador = new Trabalhador();
+    CardLayout cardLayout = new CardLayout();
 
     String acao;
+
+    //////////////////////////////////////////////////////////
+    
+    String[] colunas = new String[]{"CPF", "Nome", "Salario", "Aposentado"};
+    String[][] dados = new String[0][4];
+
+    DefaultTableModel model = new DefaultTableModel(dados, colunas);
+    JTable tabela = new JTable(model);
+
+    private JScrollPane scrollTabela = new JScrollPane();
+
+    private JPanel pnAvisos = new JPanel(new GridLayout(1, 1));
+    private JPanel pnListagem = new JPanel(new GridLayout(1, 1));
+    private JPanel pnVazio = new JPanel(new GridLayout(6, 1));
 
     public GUI() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -66,6 +87,7 @@ public class GUI extends JFrame {
         pnNorte.add(btSalvar);
         pnNorte.add(btAlterar);
         pnNorte.add(btExcluir);
+        pnNorte.add(btListar);
         btAdicionar.setVisible(false);
         btSalvar.setVisible(false);
         btAlterar.setVisible(false);
@@ -83,6 +105,21 @@ public class GUI extends JFrame {
         tfSalario.setEditable(false);
         cbAposentado.setEnabled(false);
 
+        cardLayout = new CardLayout();
+        pnSul.setLayout(cardLayout);
+
+        for (int i = 0; i < 5; i++) {
+            pnVazio.add(new JLabel(" "));
+        }
+
+        pnSul.add(pnVazio, "vazio");
+        pnSul.add(pnAvisos, "avisos");
+        pnSul.add(pnListagem, "Listagem");
+        tabela.setEnabled(false);
+
+        pnAvisos.add(new JLabel("Avisos"));
+        pnListagem.add(new JLabel("Listagem"));
+
         String caminho = "Trabalhador.csv";
         //carregar dados do HD para a memória RAM
         controle.carregarDados(caminho);
@@ -90,6 +127,7 @@ public class GUI extends JFrame {
         btBuscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                cardLayout.show(pnSul, "avisos");
                 trabalhador = controle.buscar(tfPK.getText());
                 if (trabalhador != null) { //achou o trabalhador na lista
                     tfNome.setText(trabalhador.getNome());
@@ -124,9 +162,10 @@ public class GUI extends JFrame {
                 tfSalario.setEditable(true);
                 cbAposentado.setEnabled(true);
                 tfNome.requestFocus();
+                btBuscar.setVisible(false);
                 btAdicionar.setVisible(false);
                 btSalvar.setVisible(true);
-                btBuscar.setVisible(false);
+                btListar.setVisible(false);
                 acao = "adicionar";
             }
         });
@@ -162,6 +201,7 @@ public class GUI extends JFrame {
                 tfSalario.setEditable(false);
                 cbAposentado.setEnabled(false);
                 btBuscar.setVisible(true);
+                btListar.setVisible(true);
                 btAlterar.setVisible(false);
                 btExcluir.setVisible(false);
             }
@@ -178,6 +218,7 @@ public class GUI extends JFrame {
                 cbAposentado.setEnabled(true);
                 tfNome.requestFocus();
                 btSalvar.setVisible(true);
+                btListar.setVisible(false);
                 acao = "alterar";
             }
         });
@@ -186,7 +227,7 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                int response = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir esse registro?", "Confirm",
+                int response = JOptionPane.showConfirmDialog(cp, "Deseja realmente excluir esse registro?", "Confirm",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
                 btExcluir.setVisible(false);
@@ -209,8 +250,33 @@ public class GUI extends JFrame {
             }
         });
 
+        btListar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<Trabalhador> listaTrabalhador = controle.listar();
+                String[] colunas = {"CPF", "Nome", "Salário", "Aposentado"};
+                Object[][] dados = new Object[listaTrabalhador.size()][colunas.length];
+                String aux[];
+                for (int i = 0; i < listaTrabalhador.size(); i++) {
+                    aux = listaTrabalhador.get(i).toString().split(";");
+                    for (int j = 0; j < colunas.length; j++) {
+                        dados[i][j] = aux[j];
+                    }
+                }
+                cardLayout.show(pnSul, "Listagem");
+                scrollTabela.setPreferredSize(tabela.getPreferredSize());
+                pnListagem.add(scrollTabela);
+                scrollTabela.setViewportView(tabela);
+                model.setDataVector(dados, colunas);
+
+                btAlterar.setVisible(false);
+                btExcluir.setVisible(false);
+                btAdicionar.setVisible(false);
+            }
+        });
+
         setTitle("CRUD - Trabalhador");
-        setSize(700, 500);
+        setSize(700, 200);
         setLocationRelativeTo(null);
     }
 }
