@@ -8,6 +8,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -49,6 +51,7 @@ public class GUI extends JFrame {
     JButton btAlterar = new JButton("Alterar");
     JButton btExcluir = new JButton("Excluir");
     JButton btListar = new JButton("Listar");
+    JButton btCancelar = new JButton("Cancelar");
 
     Controle controle = new Controle();
     Trabalhador trabalhador = new Trabalhador();
@@ -84,14 +87,16 @@ public class GUI extends JFrame {
         pnNorte.add(tfPK);
         pnNorte.add(btBuscar);
         pnNorte.add(btAdicionar);
-        pnNorte.add(btSalvar);
         pnNorte.add(btAlterar);
         pnNorte.add(btExcluir);
+        pnNorte.add(btSalvar);
+        pnNorte.add(btCancelar);
         pnNorte.add(btListar);
         btAdicionar.setVisible(false);
         btSalvar.setVisible(false);
         btAlterar.setVisible(false);
         btExcluir.setVisible(false);
+        btCancelar.setVisible(false);
         tfPK.requestFocus();
 
         pnCentro.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -118,7 +123,6 @@ public class GUI extends JFrame {
         tabela.setEnabled(false);
 
         pnAvisos.add(new JLabel("Avisos"));
-        pnListagem.add(new JLabel("Listagem"));
 
         String caminho = "Trabalhador.csv";
         //carregar dados do HD para a memória RAM
@@ -165,6 +169,7 @@ public class GUI extends JFrame {
                 btBuscar.setVisible(false);
                 btAdicionar.setVisible(false);
                 btSalvar.setVisible(true);
+                btCancelar.setVisible(true);
                 btListar.setVisible(false);
                 acao = "adicionar";
             }
@@ -189,6 +194,7 @@ public class GUI extends JFrame {
                     controle.alterar(trabalhador, trabalhadorAntigo);
                 }
                 btSalvar.setVisible(false);
+                btCancelar.setVisible(false);
                 tfPK.setEnabled(true);
                 tfPK.setEditable(true);
                 tfPK.requestFocus();
@@ -218,6 +224,7 @@ public class GUI extends JFrame {
                 cbAposentado.setEnabled(true);
                 tfNome.requestFocus();
                 btSalvar.setVisible(true);
+                btCancelar.setVisible(true);
                 btListar.setVisible(false);
                 acao = "alterar";
             }
@@ -275,8 +282,38 @@ public class GUI extends JFrame {
             }
         });
 
+        btCancelar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tfPK.setText("");
+                tfPK.requestFocus();
+                tfPK.setEnabled(true);
+                tfPK.setEditable(true);
+
+                tfNome.setText("");
+                tfSalario.setText("");
+                cbAposentado.setSelected(false);
+                tfNome.setEditable(false);
+                tfSalario.setEditable(false);
+                cbAposentado.setEnabled(false);
+
+                btBuscar.setVisible(true);
+                btListar.setVisible(true);
+                btSalvar.setVisible(false);
+                btCancelar.setVisible(false);
+            }
+        });
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                controle.gravarLista(caminho);
+                dispose();
+            }
+        });
+
         setTitle("CRUD - Trabalhador");
-        setSize(700, 200);
+        setSize(700, 600);
         setLocationRelativeTo(null);
     }
 }
