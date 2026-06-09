@@ -20,6 +20,7 @@ Os projetos são organizados em pastas independentes, cada uma contendo seu pró
 ## Projetos Atuais
 
 - [GUI_Pitagoras](./GUI_Pitagoras)
+- [crud-gui](./crud-gui)
 
 ## Observação
 
