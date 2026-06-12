@@ -78,7 +78,7 @@ public class GUIUnidadeDeMedida extends JDialog {
         cp.add(pnCentro, BorderLayout.CENTER);
         cp.add(pnSul, BorderLayout.SOUTH);
 
-        pnNorte.setBackground(Color.cyan);
+        pnNorte.setBackground(Color.gray);
         pnCentro.setBorder(BorderFactory.createLineBorder(Color.black));
 
         pnNorte.setLayout(new FlowLayout(FlowLayout.LEFT));
