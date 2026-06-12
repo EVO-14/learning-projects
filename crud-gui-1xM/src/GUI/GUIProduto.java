@@ -217,38 +217,46 @@ public class GUIProduto extends JDialog {
         btSalvar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (acao.equals("adicionar")) {
-                    produto = new Produto();
+                int valor = 0;
+                try {
+                    valor = Integer.valueOf(tfQuantidadeProduto.getText());
+                    
+                    if (acao.equals("adicionar")) {
+                        produto = new Produto();
+                    }
+                    Produto produtoAntigo = produto;
+
+                    produto.setIdProduto(Integer.valueOf(tfIdProduto.getText()));
+                    produto.setNomeProduto(tfNomeProduto.getText());
+                    produto.setQuantidadeProduto(valor);
+
+                    produto.setId_UM(String.valueOf(comboBoxUM.getSelectedItem()).split("-")[0]);
+
+                    if (acao.equals("adicionar")) {
+                        controle.adicionar(produto);
+                    } else {
+                        controle.alterar(produto, produtoAntigo);
+                    }
+                    btSalvar.setVisible(false);
+                    btCancelar.setVisible(false);
+                    tfIdProduto.setEnabled(true);
+                    tfIdProduto.setEditable(true);
+                    tfIdProduto.requestFocus();
+
+                    tfIdProduto.setText("");
+                    tfNomeProduto.setText("");
+                    tfQuantidadeProduto.setText("");
+
+                    btBuscar.setVisible(true);
+                    btListar.setVisible(true);
+                    tfNomeProduto.setEditable(false);
+                    tfQuantidadeProduto.setEditable(false);
+                    comboBoxUM.setEnabled(false);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(cp, "Erro no tipo de dados", "Erro para salvar", JOptionPane.PLAIN_MESSAGE);
+                    tfQuantidadeProduto.selectAll();
+                    tfQuantidadeProduto.requestFocus();
                 }
-                Produto produtoAntigo = produto;
-
-                produto.setIdProduto(Integer.valueOf(tfIdProduto.getText()));
-                produto.setNomeProduto(tfNomeProduto.getText());
-                produto.setQuantidadeProduto(Integer.valueOf(tfQuantidadeProduto.getText()));
-
-                produto.setId_UM(String.valueOf(comboBoxUM.getSelectedItem()).split("-")[0]);
-
-                if (acao.equals("adicionar")) {
-                    controle.adicionar(produto);
-                } else {
-                    controle.alterar(produto, produtoAntigo);
-                }
-                btSalvar.setVisible(false);
-                btCancelar.setVisible(false);
-                tfIdProduto.setEnabled(true);
-                tfIdProduto.setEditable(true);
-                tfIdProduto.requestFocus();
-
-                tfIdProduto.setText("");
-                tfNomeProduto.setText("");
-                tfQuantidadeProduto.setText("");
-
-                btBuscar.setVisible(true);
-                btListar.setVisible(true);
-                tfNomeProduto.setEditable(false);
-                tfQuantidadeProduto.setEditable(false);
-                comboBoxUM.setEnabled(false);
-
             }
         });
 
@@ -268,7 +276,6 @@ public class GUIProduto extends JDialog {
                 btListar.setVisible(false);
                 btExcluir.setVisible(false);
                 acao = "alterar";
-
             }
         });
 
@@ -286,13 +293,10 @@ public class GUIProduto extends JDialog {
                 tfIdProduto.setText("");
                 tfNomeProduto.setText("");
                 tfQuantidadeProduto.setText("");
-
                 btBuscar.setVisible(true);
-
                 tfNomeProduto.setEditable(false);
                 tfQuantidadeProduto.setEditable(false);
                 comboBoxUM.setEnabled(false);
-
                 btAlterar.setVisible(false);
                 if (response == JOptionPane.YES_OPTION) {
                     controle.excluir(produto);
@@ -322,7 +326,6 @@ public class GUIProduto extends JDialog {
                 btAlterar.setVisible(false);
                 btExcluir.setVisible(false);
                 btAdicionar.setVisible(false);
-
             }
         });
 
@@ -344,7 +347,6 @@ public class GUIProduto extends JDialog {
                 btListar.setVisible(true);
                 btSalvar.setVisible(false);
                 btCancelar.setVisible(false);
-
             }
         });
 
@@ -362,11 +364,9 @@ public class GUIProduto extends JDialog {
         setSize(700, 300);
         setLocationRelativeTo(null);//centraliza na tela
         setVisible(true);
-
     }
 
     public static void main(String[] args) {
         GUIProduto guiProduto = new GUIProduto();
     }
-
 }
