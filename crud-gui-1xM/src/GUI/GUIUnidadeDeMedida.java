@@ -35,9 +35,9 @@ public class GUIUnidadeDeMedida extends JDialog {
     JPanel pnNorte = new JPanel();
     JPanel pnCentro = new JPanel();
     JPanel pnSul = new JPanel();
+    
     JLabel lbPK = new JLabel("Sigla");
     JTextField tfSiglaPk = new JTextField(20);
-
     JLabel lbNome = new JLabel("Nome");
     JTextField tfNomeUnidadeDeMedida = new JTextField(50);
 

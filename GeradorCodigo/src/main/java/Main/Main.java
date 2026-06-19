@@ -19,7 +19,8 @@ public class Main {
         atributo.add("String;autor;45");
         atributo.add("double;duracao;0");
 
-        GerarEntidade gerarEntidade = new GerarEntidade(nomeClasse, atributo);
-        GerarControle gerarControle = new GerarControle(nomeClasse, atributo);
+        //GerarEntidade gerarEntidade = new GerarEntidade(nomeClasse, atributo);
+        //GerarControle gerarControle = new GerarControle(nomeClasse, atributo);
+        GerarGUI gerarGUI = new GerarGUI(nomeClasse, atributo);
     }
 }
