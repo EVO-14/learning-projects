@@ -63,9 +63,6 @@ public class GerarEntidade {
         cg.add(";\n}");
 
         cg.add("} //fim da classe");
-        for (String linha : cg) {
-            System.out.println(linha);
-        }
 
         ManipulaArquivo manipulaArquivo = new ManipulaArquivo();
         manipulaArquivo.salvarArquivo("src/main/java/Entidade/" + nomeClasse + ".java", cg);

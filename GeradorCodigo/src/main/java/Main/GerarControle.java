@@ -34,7 +34,7 @@ public class GerarControle {
         cg.add("public void limparLista() {lista.clear();}");
         cg.add("public void adicionar(" + nomeClasse + " " + st.plMinus(nomeClasse) + ") {lista.add(" + st.plMinus(nomeClasse) + ");}");
         cg.add("public List<" + nomeClasse + "> listar() {return lista;}");
-        
+
         aux = atributo.get(0).split(";");
         cg.add("public " + nomeClasse + " buscar(" + aux[0] + " " + aux[1] + ") {\n"
                 + "        for (int i = 0; i < lista.size(); i++) {\n"
@@ -44,11 +44,52 @@ public class GerarControle {
                 + "        }\n"
                 + "        return null;\n"
                 + "    }");
-        
-        cg.add("");
-        cg.add("");
-        cg.add("");
-        cg.add("");
+
+        cg.add("public void alterar(" + nomeClasse + " " + st.plMinus(nomeClasse) + ", " + nomeClasse + " " + st.plMinus(nomeClasse) + "Antigo) {\n"
+                + "        lista.set(lista.indexOf(" + st.plMinus(nomeClasse) + "Antigo), " + st.plMinus(nomeClasse) + ");\n"
+                + "    }");
+
+        cg.add("public void excluir(" + nomeClasse + " " + st.plMinus(nomeClasse) + ") {\n"
+                + "        lista.remove(" + st.plMinus(nomeClasse) + ");\n"
+                + "    }");
+
+        cg.add("public void gravarLista(String caminho) {\n"
+                + "        ManipulaArquivo manipulaArquivo = new ManipulaArquivo();\n"
+                + "        List<String> listaDeString = new ArrayList<>();\n"
+                + "        for (" + nomeClasse + " " + st.plMinus(nomeClasse) + " : lista) {\n"
+                + "            listaDeString.add(" + st.plMinus(nomeClasse) + ".toString());\n"
+                + "        }\n"
+                + "        manipulaArquivo.salvarArquivo(caminho, listaDeString);\n"
+                + "    }");
+
+        String entidadeAtributo = "";
+        for (int i = 0; i < atributo.size(); i++) {
+            aux = atributo.get(i).split(";");
+            if (aux[0].equals("String")) {
+                entidadeAtributo += "aux[" + i + "], ";
+            } else if (aux[0].equals("int")) {
+                entidadeAtributo += "Integer.valueOf(aux[" + i + "]), ";
+            } else if (aux[0].equals("double")) {
+                entidadeAtributo += "Double.valueOf(aux[" + i + "]), ";
+            }
+        }
+        entidadeAtributo = entidadeAtributo.substring(0, entidadeAtributo.length() - 2);
+
+        cg.add("public void carregarDados(String caminho) {\n"
+                + "        ManipulaArquivo manipulaArquivo = new ManipulaArquivo();\n"
+                + "        if (!manipulaArquivo.existeOArquivo(caminho)) {\n"
+                + "            manipulaArquivo.criarArquivoVazio(caminho);\n"
+                + "        }\n"
+                + "\n"
+                + "        List<String> listaDeString = manipulaArquivo.abrirArquivo(caminho);\n"
+                + "        //converter de CSV para " + nomeClasse + "\n"
+                + "        " + nomeClasse + " " + st.plMinus(nomeClasse) + ";\n"
+                + "        for (String string : listaDeString) {\n"
+                + "            String aux[] = string.split(\";\");\n"
+                + "            " + st.plMinus(nomeClasse) + " = new " + nomeClasse + "(" + entidadeAtributo + ");\n"
+                + "            lista.add(" + st.plMinus(nomeClasse) + ");\n"
+                + "        }\n"
+                + "    }");
 
         cg.add("} //fim da classe");
 

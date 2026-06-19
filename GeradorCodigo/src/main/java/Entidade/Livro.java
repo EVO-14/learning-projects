@@ -1,20 +1,61 @@
-package Entidade;/**
+package Entidade;
+
+/**
  *
  * @author duduv
- */public class Livro {
-private String cpf;private String titulo;private int anoPublicacao;private String autor;public Livro() {}public Livro(String cpf,String titulo,int anoPublicacao,String autor) {
-this.cpf = cpf;this.titulo = titulo;this.anoPublicacao = anoPublicacao;this.autor = autor;}
+ */
+public class Livro {
 
- //gets e sets
-public String getCpf() {return cpf;}
+    private int id;
+    private String titulo;
+    private int anoPublicacao;
+    private String autor;
 
-public String getTitulo() {return titulo;}
+    public Livro() {
+    }
 
-public int getAnoPublicacao() {return anoPublicacao;}
+    public Livro(int id, String titulo, int anoPublicacao, String autor) {
+        this.id = id;
+        this.titulo = titulo;
+        this.anoPublicacao = anoPublicacao;
+        this.autor = autor;
+    }
 
-public String getAutor() {return autor;}
+    //gets e sets
+    public int getId() {
+        return id;
+    }
 
-public void setCpf(String cpf) {this.cpf = cpf;}public void setTitulo(String titulo) {this.titulo = titulo;}public void setAnoPublicacao(int anoPublicacao) {this.anoPublicacao = anoPublicacao;}public void setAutor(String autor) {this.autor = autor;}@Override
- public String toString() {
- return cpf + ";" +  titulo + ";" +  anoPublicacao + ";" +  autor ;
-}} //fim da classe
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public int getAnoPublicacao() {
+        return anoPublicacao;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public void setAnoPublicacao(int anoPublicacao) {
+        this.anoPublicacao = anoPublicacao;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    @Override
+    public String toString() {
+        return id + ";" + titulo + ";" + anoPublicacao + ";" + autor;
+    }
+} //fim da classe
