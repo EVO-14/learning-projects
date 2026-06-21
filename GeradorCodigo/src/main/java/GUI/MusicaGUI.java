@@ -43,6 +43,12 @@ public class MusicaGUI extends JDialog {
     JButton btExcluir = new JButton("Excluir");
     JButton btListar = new JButton("Listar");
     JButton btCancelar = new JButton("Cancelar");
+    String acao = "";
+    private JScrollPane scrollTabela = new JScrollPane();
+    private JPanel pnAvisos = new JPanel(new GridLayout(1, 1));
+    private JPanel pnListagem = new JPanel(new GridLayout(1, 1));
+    private JPanel pnVazio = new JPanel(new GridLayout(6, 1));
+    private CardLayout cardLayout;
 
     public MusicaGUI() {
     }

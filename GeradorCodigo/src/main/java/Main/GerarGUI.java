@@ -15,6 +15,7 @@ public class GerarGUI {
         List<String> cg = new ArrayList(); //codigo gerado
         StringTools st = new StringTools();
         String[] aux;
+        String nomeClasseMin = st.plMinus(nomeClasse);
 
         cg.add("package GUI;\n\n");
 
@@ -60,6 +61,30 @@ public class GerarGUI {
                 + "    JButton btExcluir = new JButton(\"Excluir\");\n"
                 + "    JButton btListar = new JButton(\"Listar\");\n"
                 + "    JButton btCancelar = new JButton(\"Cancelar\");");
+
+        cg.add("String acao = \"\";");
+        cg.add("private JScrollPane scrollTabela = new JScrollPane();\n"
+                + "    private JPanel pnAvisos = new JPanel(new GridLayout(1, 1));\n"
+                + "    private JPanel pnListagem = new JPanel(new GridLayout(1, 1));\n"
+                + "    private JPanel pnVazio = new JPanel(new GridLayout(6, 1));\n\n"
+                + "    private CardLayout cardLayout;\n\n");
+        cg.add("////////////////////mutavel////////////////////\n\n");
+        cg.add("//pk");
+
+        aux = atributo.get(0).split(";");
+
+        cg.add("JLabel lb" + st.plMaiusc(aux[1]) + " = new JLabel(\"" + st.plMaiusc(aux[1]) + "\");\n"
+                + "    JTextField tfSiglaPk = new JTextField(20);");
+        cg.add("");
+        cg.add("");
+        cg.add("");
+        cg.add("");
+        cg.add("");
+        cg.add("");
+        cg.add("");
+        cg.add("");
+        cg.add("");
+        cg.add("");
 
         cg.add("public " + nomeClasse + "GUI() {}");
 
