@@ -68,26 +68,87 @@ public class GerarGUI {
                 + "    private JPanel pnListagem = new JPanel(new GridLayout(1, 1));\n"
                 + "    private JPanel pnVazio = new JPanel(new GridLayout(6, 1));\n\n"
                 + "    private CardLayout cardLayout;\n\n");
-        cg.add("////////////////////mutavel////////////////////\n\n");
-        cg.add("//pk");
+
+        for (int i = 0; i < atributo.size(); i++) {
+            aux = atributo.get(i).split(";");
+            cg.add("JLabel lb" + st.plMaiusc(aux[1]) + " = new JLabel(\"" + st.plMaiusc(aux[1]) + "\");\n"
+                    + "JTextField tf" + st.plMaiusc(aux[1]) + " = new JTextField(" + aux[2] + ");\n");
+        }
+        cg.add("\n");
+        cg.add(nomeClasse + "Controle" + " controle = new " + nomeClasse + "Controle();\n"
+                + nomeClasse + " " + nomeClasseMin + " = new " + nomeClasse + "();\n\n");
+
+        String entidadeAtributo = "";
+        for (int i = 0; i < atributo.size(); i++) {
+            aux = atributo.get(i).split(";");
+            entidadeAtributo += "\"" + aux[1] + "\",";
+        }
+        entidadeAtributo = entidadeAtributo.substring(0, entidadeAtributo.length() - 1);
+        cg.add("String[] colunas = new String[]{" + entidadeAtributo + "};");
+        cg.add("String[][] dados = new String[0][colunas.length];\n"
+                + "DefaultTableModel model = new DefaultTableModel(dados, colunas);\n"
+                + "JTable tabela = new JTable(model);");
+
+        cg.add("public " + nomeClasse + "GUI() {");
+        cg.add("setDefaultCloseOperation(DISPOSE_ON_CLOSE);\n"
+                + "cp = getContentPane();\n"
+                + "cp.setLayout(new BorderLayout());\n"
+                + "setTitle(\"CRUD - " + nomeClasse + "\");\n"
+                + "\n"
+                + "cp.add(pnNorte, BorderLayout.NORTH);\n"
+                + "cp.add(pnCentro, BorderLayout.CENTER);\n"
+                + "cp.add(pnSul, BorderLayout.SOUTH);\n"
+                + "\n"
+                + "pnNorte.setBackground(Color.gray);\n"
+                + "pnCentro.setBorder(BorderFactory.createLineBorder(Color.black));\n"
+                + "\n"
+                + "pnNorte.setLayout(new FlowLayout(FlowLayout.LEFT));\n\n");
 
         aux = atributo.get(0).split(";");
 
-        cg.add("JLabel lb" + st.plMaiusc(aux[1]) + " = new JLabel(\"" + st.plMaiusc(aux[1]) + "\");\n"
-                + "    JTextField tfSiglaPk = new JTextField(20);");
-        cg.add("");
-        cg.add("");
-        cg.add("");
-        cg.add("");
-        cg.add("");
-        cg.add("");
+        cg.add("pnNorte.add(lb" + st.plMaiusc(aux[1]) + ");\n"
+                + "pnNorte.add(tf" + st.plMaiusc(aux[1]) + ");\n"
+                + "pnNorte.add(btBuscar);\n"
+                + "pnNorte.add(btAdicionar);\n"
+                + "pnNorte.add(btAlterar);\n"
+                + "pnNorte.add(btExcluir);\n"
+                + "pnNorte.add(btListar);\n"
+                + "pnNorte.add(btSalvar);\n"
+                + "pnNorte.add(btCancelar);\n"
+                + "\n"
+                + "btSalvar.setVisible(false);\n"
+                + "btAdicionar.setVisible(false);\n"
+                + "btAlterar.setVisible(false);\n"
+                + "btExcluir.setVisible(false);\n"
+                + "btCancelar.setVisible(false);");
+        cg.add("pnCentro.setLayout(new GridLayout(1, colunas.length-1));");
+        for (int i = 1; i < atributo.size(); i++) {
+            aux = atributo.get(i).split(";");
+            cg.add("pnCentro.add(lb" + st.plMaiusc(aux[1]) + ");\n"
+                    + "pnCentro.add(tf" + st.plMaiusc(aux[1]) + ");");
+        }
+        cg.add("\n\n");
+        cg.add("cardLayout = new CardLayout();\n"
+                + "pnSul.setLayout(cardLayout);\n"
+                + "\n"
+                + "for (int i = 0; i < 5; i++) {\n"
+                + "pnVazio.add(new JLabel(\" \"));\n"
+                + "}\n"
+                + "pnSul.add(pnVazio, \"vazio\");\n"
+                + "pnSul.add(pnAvisos, \"avisos\");\n"
+                + "pnSul.add(pnListagem, \"listagem\");\n"
+                + "tabela.setEnabled(false);\n"
+                + "\n"
+                + "pnAvisos.add(new JLabel(\"Avisos\"));\n\n");
+        cg.add("String caminho = \"" + nomeClasse + ".csv\";\n" +
+"        //carregar dados do HD para memória RAM\n" +
+"        controle.carregarDados(caminho);");
         cg.add("");
         cg.add("");
         cg.add("");
         cg.add("");
 
-        cg.add("public " + nomeClasse + "GUI() {}");
-
+        cg.add("}");
         cg.add("} //fim da classe");
 
         ManipulaArquivo manipulaArquivo = new ManipulaArquivo();
