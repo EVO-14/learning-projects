@@ -37,9 +37,18 @@ public class GerarControle {
 
         aux = atributo.get(0).split(";");
         cg.add("public " + nomeClasse + " buscar(" + aux[0] + " " + aux[1] + ") {\n"
-                + "        for (int i = 0; i < lista.size(); i++) {\n"
-                + "            if (lista.get(i).get" + st.plMaiusc(aux[1]) + "() == " + aux[1] + ") {\n"
-                + "                return lista.get(i);\n"
+                + "        for (int i = 0; i < lista.size(); i++) {\n");
+        
+        String tipo = "";
+        switch (aux[0]) {
+            case "String":
+                tipo = "if (lista.get(i).get" + st.plMaiusc(aux[1]) + "().equals(" + aux[1] + ")) {\n";
+                break;
+            default:
+                tipo = "if (lista.get(i).get" + st.plMaiusc(aux[1]) + "() == " + aux[1] + ") {\n";
+        }
+        cg.add(tipo);
+        cg.add("return lista.get(i);\n"
                 + "            }\n"
                 + "        }\n"
                 + "        return null;\n"
@@ -57,7 +66,7 @@ public class GerarControle {
                 + "        ManipulaArquivo manipulaArquivo = new ManipulaArquivo();\n"
                 + "        List<String> listaDeString = new ArrayList<>();\n"
                 + "        for (" + nomeClasse + " " + st.plMinus(nomeClasse) + " : lista) {\n"
-                + "            listaDeString.add(" + st.plMinus(nomeClasse) + ".toString());\n"
+                + "            listaDeString.add(" + st.plMinus(nomeClasse) + ".toString() + System.lineSeparator());\n"
                 + "        }\n"
                 + "        manipulaArquivo.salvarArquivo(caminho, listaDeString);\n"
                 + "    }");

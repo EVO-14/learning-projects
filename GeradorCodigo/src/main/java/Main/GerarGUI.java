@@ -120,11 +120,12 @@ public class GerarGUI {
                 + "btAlterar.setVisible(false);\n"
                 + "btExcluir.setVisible(false);\n"
                 + "btCancelar.setVisible(false);");
-        cg.add("pnCentro.setLayout(new GridLayout(1, colunas.length-1));");
+        cg.add("pnCentro.setLayout(new GridLayout(" + atributo.size() + "-1, 2));");
         for (int i = 1; i < atributo.size(); i++) {
             aux = atributo.get(i).split(";");
             cg.add("pnCentro.add(lb" + st.plMaiusc(aux[1]) + ");\n"
                     + "pnCentro.add(tf" + st.plMaiusc(aux[1]) + ");");
+            cg.add("tf" + st.plMaiusc(aux[1]) + ".setEditable(false);");
         }
         cg.add("\n\n");
         cg.add("cardLayout = new CardLayout();\n"
@@ -226,7 +227,10 @@ public class GerarGUI {
                 + "public void actionPerformed(ActionEvent e) {\n"
                 + "if (acao.equals(\"adicionar\")) {\n"
                 + nomeClasseMin + " = new " + nomeClasse + "();\n}\n"
-                + nomeClasse + " " + nomeClasseMin + "Antigo = " + nomeClasseMin + ";");
+                + nomeClasse + " " + nomeClasseMin + "Antigo = " + nomeClasseMin + ";\n\n");
+        
+        aux = atributo.get(0).split(";");
+        cg.add(nomeClasseMin + ".set" + st.plMaiusc(aux[1]) + "(tf" + st.plMaiusc(aux[1]) + ".getText())\n\n;");
 
         for (int i = 1; i < atributo.size(); i++) {
             aux = atributo.get(i).split(";");
@@ -380,7 +384,7 @@ public class GerarGUI {
                 + "});\n"
                 + "\n"
                 + "setModal(true);\n"
-                + "setSize(700, 200);\n"
+                + "pack();\n"
                 + "setLocationRelativeTo(null);//centraliza na tela\n"
                 + "setVisible(true);\n"
                 + "\n"
