@@ -1,5 +1,6 @@
 package Main;
 
+import GUI.MusicaGUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,14 +14,15 @@ public class Main {
         List<String> atributo = new ArrayList();
         String nomeClasse = "Musica";
 
-        atributo.add("int;id;0");
+        atributo.add("int;id;45");
         atributo.add("String;titulo;45");
-        atributo.add("int;anoPublicacao;0");
+        atributo.add("int;anoPublicacao;45");
         atributo.add("String;autor;45");
-        atributo.add("double;duracao;0");
+        atributo.add("double;duracao;45");
 
         //GerarEntidade gerarEntidade = new GerarEntidade(nomeClasse, atributo);
         //GerarControle gerarControle = new GerarControle(nomeClasse, atributo);
-        GerarGUI gerarGUI = new GerarGUI(nomeClasse, atributo);
+        //GerarGUI gerarGUI = new GerarGUI(nomeClasse, atributo);
+        MusicaGUI musicaGUI = new MusicaGUI();
     }
 }

@@ -134,11 +134,11 @@ public class GUIUnidadeDeMedida extends JDialog {
 
                 } else {//não achou na lista
                     //mostrar botão incluir
-                    tfNomeUnidadeDeMedida.setText("");
                     btAdicionar.setVisible(true);
-                    tfNomeUnidadeDeMedida.setEditable(false);
                     btAlterar.setVisible(false);
                     btExcluir.setVisible(false);
+                    tfNomeUnidadeDeMedida.setText("");
+                    tfNomeUnidadeDeMedida.setEditable(false);
                 }
             }
         });
@@ -146,15 +146,16 @@ public class GUIUnidadeDeMedida extends JDialog {
         btAdicionar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tfSiglaPk.setEnabled(false);
-                tfNomeUnidadeDeMedida.setEditable(true);
-                tfNomeUnidadeDeMedida.requestFocus();
                 btAdicionar.setVisible(false);
                 btSalvar.setVisible(true);
                 btCancelar.setVisible(true);
                 btBuscar.setVisible(false);
                 btListar.setVisible(false);
                 acao = "adicionar";
+                
+                tfSiglaPk.setEnabled(false);
+                tfNomeUnidadeDeMedida.setEditable(true);
+                tfNomeUnidadeDeMedida.requestFocus();
             }
         });
 
@@ -176,14 +177,15 @@ public class GUIUnidadeDeMedida extends JDialog {
                 }
                 btSalvar.setVisible(false);
                 btCancelar.setVisible(false);
+                btBuscar.setVisible(true);
+                btListar.setVisible(true);
+                
                 tfSiglaPk.setEnabled(true);
                 tfSiglaPk.setEditable(true);
                 tfSiglaPk.requestFocus();
                 tfSiglaPk.setText("");
-
+                
                 tfNomeUnidadeDeMedida.setText("");
-                btBuscar.setVisible(true);
-                btListar.setVisible(true);
                 tfNomeUnidadeDeMedida.setEditable(false);
 
             }
@@ -194,36 +196,34 @@ public class GUIUnidadeDeMedida extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 btBuscar.setVisible(false);
                 btAlterar.setVisible(false);
-                tfSiglaPk.setEditable(false);
-                tfNomeUnidadeDeMedida.setEditable(true);
-
-                tfNomeUnidadeDeMedida.requestFocus();
                 btSalvar.setVisible(true);
                 btCancelar.setVisible(true);
                 btListar.setVisible(false);
                 btExcluir.setVisible(false);
                 acao = "alterar";
-
+                tfSiglaPk.setEditable(false);
+                tfNomeUnidadeDeMedida.setEditable(true);
+                tfNomeUnidadeDeMedida.requestFocus();
             }
         });
 
         btExcluir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 int response = JOptionPane.showConfirmDialog(cp, "Confirme a exclusão?", "Confirm",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
                 btExcluir.setVisible(false);
+                btBuscar.setVisible(true);
+                btAlterar.setVisible(false);
+                
                 tfSiglaPk.setEnabled(true);
                 tfSiglaPk.setEditable(true);
                 tfSiglaPk.requestFocus();
                 tfSiglaPk.setText("");
-
                 tfNomeUnidadeDeMedida.setText("");
-                btBuscar.setVisible(true);
                 tfNomeUnidadeDeMedida.setEditable(false);
-                btAlterar.setVisible(false);
+                
                 if (response == JOptionPane.YES_OPTION) {
                     controle.excluir(unidadeDeMedida);
                 }
@@ -260,16 +260,16 @@ public class GUIUnidadeDeMedida extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 btCancelar.setVisible(false);
+                btBuscar.setVisible(true);
+                btListar.setVisible(true);
+                btSalvar.setVisible(false);
+                btCancelar.setVisible(false);
                 tfSiglaPk.setText("");
                 tfSiglaPk.requestFocus();
                 tfSiglaPk.setEnabled(true);
                 tfSiglaPk.setEditable(true);
                 tfNomeUnidadeDeMedida.setText("");
                 tfNomeUnidadeDeMedida.setEditable(false);
-                btBuscar.setVisible(true);
-                btListar.setVisible(true);
-                btSalvar.setVisible(false);
-                btCancelar.setVisible(false);
 
             }
         });
