@@ -2,7 +2,6 @@ package GUI;
 
 import Controle.ControleProduto;
 import Entidade.Produto;
-import Entidade.UnidadeDeMedida;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
